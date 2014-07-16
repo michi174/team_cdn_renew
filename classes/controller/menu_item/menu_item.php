@@ -8,6 +8,8 @@ use wsc\form\element\Select;
 use wsc\application\Application;
 use wsc\form\element\Submit;
 use wsc\systemnotification\SystemNotification;
+use model\areas\Areas;
+use wsc\functions\tools\Tools;
 
 /**
  *
@@ -38,6 +40,7 @@ class menu_item extends controller_abstract
         $menuitem->setDefaultTable("areas");
         $menuitem->enableDBFunctions(Application::getInstance()->load("database"));
         $menuitem->setDBMod($menuitem::DB_INSERT);
+        $menuitem->addManualDBField("", "menu_item", 1);
         
         $name       = (new Text("pname"))->setDisplayName("Pluginname");
         $name->setLabel("Pluginname");
@@ -74,14 +77,7 @@ class menu_item extends controller_abstract
         $parent->addOption("","Keines");
         $parent->setRequired();
         $parent->setTableField("parent");
-        
-        $sql_parent = "SELECT * FROM areas";
-        $res_parent = $db->query($sql_parent) or die("SQL in Datei: " . __FILE__.__LINE__ . " " . $db->error);
-        
-        while(($row_parent = $res_parent->fetch_assoc()) == true)
-        {
-            $parent->addOption($row_parent['id'], $row_parent['display_name']);
-        }
+        $parent->addOptionsFromDBQuery((new Areas())->getAllAreas(), "id", "display_name");
         
         $send   = new Submit("additem");
         $send->setAttribute("value", "Men&uuml;element erstellen");
@@ -100,12 +96,8 @@ class menu_item extends controller_abstract
         
         if(isset($_POST['additem']))
         {
-            
-            
             if($menuitem->isValid())
             {
-                $menuitem->addManualDBField("", "menu_item", 1);
-                
                 $saved  = $menuitem->executeDatabase();
                 
                 if($saved == true)
@@ -113,25 +105,10 @@ class menu_item extends controller_abstract
                     $notify->addMessage("Die Daten wurde erfolgreich gespeichert.", "success");
                     $view->assign("valid", true);
                 }
-
             }
             else
             {
-                $message  = "Es sind folgende Fehler bei der Validierung aufgetreten:<br><dl>";
-        
-                foreach ($menuitem->getMessages() as $element => $messages)
-                {
-                    $element  = $menuitem->get($element)->getDisplayName();
-                    $message  .= "<dt>".$element."</dt>";
-        
-                    foreach ($messages as $element_msg)
-                    {
-                        $message  .= "<dd>&bull;&nbsp;" . $element_msg . "</dd>";
-                    }
-                }
-        
-                $message  .= "</dl>";
-        
+                $message  = Tools::getFormattedFormErrors($menuitem);
                 $notify->addMessage($message, "error");
             }
         }

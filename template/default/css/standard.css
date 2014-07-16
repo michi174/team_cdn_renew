@@ -72,6 +72,7 @@ a:hover						{ text-decoration: underline; color : #555; }
 .section-body				{border:#ccc solid 1px;background-color:#fff; padding:10px; width:90%; min-width:250px;}
 .section-title				{font-size:16px; font-weight:700; background-color:#f3f3f3; 
 							padding:5px 10px 5px 10px; width:100%; min-width:250px; vertical-align:middle;}
+.additional-info			{font-size:12px; color:#999}
 
 .main-shadow				{/*box-shadow:2px 0 10px 0px #999, -2px 0 10px 0px #999;*/border-left:solid 3px #222;border-right:solid 3px #222}							
 .s-t-top					{border-radius:0.2em 0.2em 0 0; border-left:1px; border-right:1px; border-top:1px; border-color:#ccc; border-style:solid}
@@ -86,6 +87,12 @@ a:hover						{ text-decoration: underline; color : #555; }
 .input-error				{border:2px solid #b41b43 !important}
 
 #add-menu-item-wrapper		{width:100%; margin:auto;}
+
+#add-topic-wrapper			{width:100%; margin:auto;}
+#add-topic-wrapper textarea	{width:99%; height:250px;}
+#add-topic-wrapper input[id="title"] {width:99%}
+
+#news-overview-nwrapper		{width:98%}
 
 
 input, textarea, select, radio, email, date
@@ -210,6 +217,7 @@ a.output:hover
 #top-arrow:hover	{background-position:top;cursor:pointer;}
 .register	{width:500px;padding:10px;}
 .additem	{width:80%; padding:10px; margin:auto}
+.addtopic	{width:90%; padding:10px; margin:auto}
 
 .register input, .register select
 {
@@ -229,10 +237,14 @@ input[type="checkbox"], input[type="radio"]
 	height:15px;
 }
 
-.default-form input, select
+.default-form input, select, textarea
 {
 	width:300px;
 	margin-top:5px;
+}
+.default-form input[type="checkbox"]
+{
+	width:15px;
 }
 .default-form input[type="submit"]
 {
@@ -765,11 +777,11 @@ li.search
 { 	
 	position:fixed;
 	width:250px;
-	top:172px;
+	top:0px;
 	right:0px;
 	height:100%;
 	color: #000;
-	background-color:hsla(0,0%,50%,0.4);
+	background-color:hsla(0,0%,20%,0.4);
 	padding-top:20px;
 	/*box-shadow:-1px 0px 0px #555, inset #CCC 1px 0 1px;*/
 	display:none;
@@ -846,7 +858,7 @@ li.search
 }
 .tips_topic_readmore a
 {
-	width:90px;
+	width:100px;
 	display:block;
 	line-height:20px;
 	margin-top:10px;
@@ -866,7 +878,6 @@ li.search
 	opacity:0.8;
 	transition-property:all;
 	transition-duration:0.3s;
-	float:right;
 }
 .tips_topic_readmore a:hover
 {
