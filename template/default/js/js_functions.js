@@ -13,12 +13,12 @@ $(document).ready(function(){
 		
 		for(i=0; i<num_players; i++)
 		{
-			players[i]	= new Array();
-			players[i]["name"]			= "Spieler " +(i+1);	//Punkte in aktueller Runde
-			players[i]["points"]		= 0;					//Anzahl Punkte
-			players[i]["bierdeckel"]	= 0;					//Anzahl Punkte
-			players[i]["id"]			= i;					//Eindeutige Kennung des Spielers
-			players[i]["earned_bd"]		= false;				//hat er den zustehenden Bierdeckel bereits bekommen?
+			players[i]			= new Array();
+			players[i]["name"]		= "Spieler " +(i+1);	//Punkte in aktueller Runde
+			players[i]["points"]		= 0;			//Anzahl Punkte
+			players[i]["bierdeckel"]	= 0;			//Anzahl Punkte
+			players[i]["id"]		= i;			//Eindeutige Kennung des Spielers
+			players[i]["earned_bd"]		= false;		//hat er den zustehenden Bierdeckel bereits bekommen?
 			
 			$('#result-table').append("<div class=\"row\"><div class=\"cell\">"+players[i]["name"]+":</div><div class=\"cell\"><span id=\"points-p"+i+"\">"+players[i]["points"]+"</span> Punkte</div><div class=\"cell\"><span id=\"cards-p"+i+"\">"+players[i]["bierdeckel"]+"</span> Bierdeckel</div></div>");
 		}
@@ -29,7 +29,7 @@ $(document).ready(function(){
 		$('#player').text(active_player["name"]);
 	});
 	
-	//Würfel fixieren
+	//Wï¿½rfel fixieren
 	$('.cube').click(function(){
 		
 		cubeid	= $(this).attr('id');
@@ -63,7 +63,7 @@ $(document).ready(function(){
 			$(this).removeClass("cube-hover-hold");
 	});
 	
-	//Würfeln
+	//Wï¿½rfeln
 	$('#roll').click(function(){
 		
 		$unlocked_cubes	= $('.cube').not('.hold');
@@ -81,8 +81,7 @@ $(document).ready(function(){
 			
 			$unlocked_cubes.each(function(index, element) {
 				
-				r_zahl		= 1 + 5.49 * (Math.random());
-				r_zahl		= Math.round(r_zahl);
+				r_zahl	= Math.floor(Math.random() * (6 - 1 + 1)) + 1;
 				
 				$(this).text(r_zahl);
 				
@@ -170,7 +169,7 @@ $(document).ready(function(){
 		return points;
 	}
 
-	//Punkte der aktuellen Runde für alle Spieler zurücksetzen. (Neue Runde)
+	//Punkte der aktuellen Runde fï¿½r alle Spieler zurï¿½cksetzen. (Neue Runde)
 	function resetPoints()
 	{
 		for(var index in players)
@@ -181,7 +180,7 @@ $(document).ready(function(){
 		}
 	}
 		
-	//Wenn auf Nächster Spieler geklickt wird.
+	//Wenn auf Nï¿½chster Spieler geklickt wird.
 	$('#next-player').click(function(){
 		if(rolls > 0)
 		{
@@ -215,7 +214,7 @@ $(document).ready(function(){
 		}
 	}
 	
-	//Würfel zurücksetzen
+	//Wï¿½rfel zurï¿½cksetzen
 	function resetCubes()
 	{
 		$('.cube').text(0);
@@ -342,13 +341,13 @@ $(document).ready(function(){
 			$('#top-arrow').hide(0);
 		}
 	}).stop();
-	//Wenn der Slider berührt wird, dass wird angezeigt.
+	//Wenn der Slider berï¿½hrt wird, dass wird angezeigt.
 	$('#live_tile_slider').hover(function()
 	{
 		$('#box_content_tiles').show('slide',{direction:'right'});
 	});
 	
-	//Beim Berühren von box_content_text wird der Tiles Container ausgeblendet, außer cc_fixed ist wahr.
+	//Beim Berï¿½hren von box_content_text wird der Tiles Container ausgeblendet, auï¿½er cc_fixed ist wahr.
 	$('#box_content_tiles').mouseleave(function()
 	{
 		if($.cookie("cc_fix") != "true")
