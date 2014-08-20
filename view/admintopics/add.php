@@ -22,7 +22,7 @@
             <?= $this->formLabel($this->topic->get("important"))?><br>
         </div>
         <div class="section-title s-t-bottom addtopic" style="text-align:center">
-            <?= $this->formRow($this->topic->get("addtopic")) ?><br>
+            <?= $this->formRow($this->topic->get("submitform")) ?><br>
         </div>
     </div>
     <?=$this->form()->closeTag()?>

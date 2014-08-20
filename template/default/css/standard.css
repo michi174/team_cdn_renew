@@ -39,9 +39,9 @@ font,th,td,p 				{ font-family:'Segoe UI', Tahoma, Helvetica, Sans-Serif;}
 hr 							{ border-bottom:1px #121212; box-shadow:0px 1px #2A2A2A;}
 
 h1, h2, h3, h4, h5, h6		{font-family:'WOL_SL','Segoe UI Semilight','Segoe UI',Tahoma,Helvetica,sans-serif; color:#444; margin-bottom:5px;}
-h1							{font-size:36px; text-shadow:#BBB 0px 1px}
-h2							{font-size:24px;}
-h3							{font-size:18px;}
+h1							{font-size:36px;}
+h2							{font-size:24px}
+h3							{font-size:18px}
 h4							{font-size:16px; font-weight:700}
 dd							{margin-left:10px;}
 
@@ -53,8 +53,8 @@ a:link,a:active,a:visited 	{ color : #555; text-decoration:none;}
 a:hover						{ text-decoration: underline; color : #555; }
 .clearing					{clear:both;}
 .login_notification			{font-family:Verdana; color:#FFF; font-size:10px;}
-.headline					{font-family: 'Segoe UI', Tahoma, Helvetica, Sans-Serif; font-size:24px; color:#000; text-align:left; margin-bottom:15px; letter-spacing:3px;}
-.subline					{font-family: 'Segoe UI', Tahoma, Helvetica, Sans-Serif; font-size:15px; color:#000; text-align:left; margin-top:-15px;margin-bottom:15px; letter-spacing:3px;}
+.headline					{font-family: 'Segoe UI', Tahoma, Helvetica, Sans-Serif; font-size:26px; color:#000; text-align:left; margin-bottom:10px; letter-spacing:3px; font-weight:bold}
+.subline					{font-family: 'Segoe UI', Tahoma, Helvetica, Sans-Serif; font-size:13px; color:#000; text-align:left; margin-bottom:10px; margin-top:10px; letter-spacing:2px;}
 .categorie_hl				{font-family: 'Segoe UI', Tahoma, Helvetica, Sans-Serif; font-size:19px; margin-bottom:-8px; display:block; }
 .post_headline				{font-family: 'Segoe UI', Tahoma, Helvetica, Sans-Serif; font-size:28px; color:#454545; text-align:left; margin-bottom:15px; letter-spacing:1px;}
 .post_header				{font-family: 'Segoe UI', Tahoma, Helvetica, Sans-Serif; font-size:11px; font-weight:bold;}
@@ -93,7 +93,16 @@ a:hover						{ text-decoration: underline; color : #555; }
 #add-topic-wrapper input[id="title"] {width:99%}
 
 #news-overview-nwrapper		{width:98%}
+#news-detailview-nwrapper	{width:98%}
+#news-detailview-title		{font-size:2.0rem;}
 
+.singleheadline{
+	line-height:1.7rem;
+	font-family:'Oswald', Arial, Helvetica, sans-serif;
+	font-size:1.8rem;
+	padding-bottom:0;
+	margin-bottom:0.5rem;
+}
 
 input, textarea, select, radio, email, date
 {
@@ -528,14 +537,14 @@ a.pagescroll_link_active
 	background-color:#F9F9F9;
 	letter-spacing:0.5px;
 }
-.post_bar
+.post-bar
 {
-	margin:auto;
 	margin-top:30px;
+	width:100%;
 }
-.post_bar ul
+.post-bar ul
 {
-	background:#EFEFEF;
+	background:#FFF;
 	border:1px solid #CCC;
 	padding:5px;
 	padding-left:0px !important;
@@ -543,7 +552,7 @@ a.pagescroll_link_active
 	overflow:hidden;
 	clear:both;
 }
-.post_bar li
+.post-bar li
 {
 	display:block;
 	line-height:30px;
@@ -558,7 +567,7 @@ a.pagescroll_link_active
 	margin-right:2px;
 	text-align:left;
 }
-.post_bar li:hover
+.post-bar li:hover
 {
 	background-color:#9C3;
 	border-radius:3px;
@@ -578,21 +587,21 @@ li.google
 li.line
 {
 	min-width:0px;
+	max-width:10px;
 	padding:0px;
-	border:1px ;
-	border-left:1px solid #CCC;
 	border-left:1px solid #CCC;
 }
 li.kommentare
 {
 	padding-left:5px;
 	float:right;
-}li.kommentare:hover
+}
+li.kommentare:hover
 {
 	background-color:#39F;
 }
 
-.post_bar a:hover
+.post-bar a:hover
 {
 	text-decoration:none;
 }

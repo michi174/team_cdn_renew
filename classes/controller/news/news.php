@@ -4,6 +4,8 @@ namespace controller\news;
 use wsc\controller\controller_abstract;
 use wsc\application\Application;
 use model\topics\Topics;
+use wsc\functions\tools\Tools;
+use model\posts\Posts;
 
 /**
  *
@@ -12,6 +14,7 @@ use model\topics\Topics;
  */
 class News extends controller_abstract
 {
+    const   ID_NAME = "id";
     
     private $database;
 
@@ -33,31 +36,76 @@ class News extends controller_abstract
     	
     }
     
+    private function getHeadlineFromText($text)
+    {
+        $headline_pattern   = '#\[headline\](.*)\[\/headline\]#ismU';
+        $headlines          = array();
+        
+        preg_match($headline_pattern, $text, $headlines);
+        
+        if(count($headlines) > 0)
+        {
+            return $headlines[1];
+            
+        }
+        else
+            return false;
+        
+    }
     public function overview_action()
     {
         $view   = $this->createView();
         
         $news       = new Topics();
-        $allnews    = $news->getTopicsByBoard($this->database->getDataByField("boards", "name", "news")['id']);
-        $headline_pattern   = "#\[headline\](.*)\[\/headline\]#ismU";
-        
-        
+        $allnews    = $news->getTopicsByBoard($this->database->getDataByField("boards", "name", "news")['id'], 5, 0, "createTimestamp", Topics::SORT_DESC);
+        $headline_pattern   = '#\[headline\](.*)\[\/headline\]#ismU';
         
         foreach ($allnews as $id => $news)
         {
             $autorname  = $this->database->getDataById("userdata", $news['autor'])['username'];
             $text       = $this->database->getDataByField("posts", "topicId", $news['id'])['text'];
-            $headlines  = array();
             
-            preg_match($headline_pattern, $text, $headlines);
+            $headline   = $this->getHeadlineFromText($text);
             
-            $allnews[$id]['hasHeadline']    = (count($headlines)> 0) ? true : false;
+            $allnews[$id]['hasHeadline']    = ($headline !== false) ? true : false;
             $allnews[$id]['autor']          = $autorname;
-            $allnews[$id]['text']           = (count($headlines)> 0) ? $headlines[1] : $text;
+            $allnews[$id]['text']           = ($headline !== false) ? $this->getHeadlineFromText($text) : $text;
+        }
+
+        $view->assign("allnews", $allnews);
+    }
+    
+    public function detailview_action()
+    {
+        $view       = $this->createView();
+        $request    = Application::getInstance()->load("request");
+        
+        
+        
+        if($request->get(self::ID_NAME) !== null)
+        {
+            $topic  = new Topics();
+            $topicData  = $topic->getTopicById($request->get(self::ID_NAME));
+            
+            $posts      = new Posts();
+            $postData   = $posts->getPostsByTopicID($topicData['id'], 1, 0);
+            $headline_pattern   = '#\[headline\](.*)\[\/headline\]#ismU';
+            
+            $headline   = $this->getHeadlineFromText($postData['text']);
+            $postData['text']   = preg_replace($headline_pattern, "", $postData['text']);
+            
+            $view->assign("autor", Tools::getUsernameByID($topicData['autor']));
+            $view->assign("title", $topicData['title']);
+            $view->assign("date", $topicData['createTimestamp']);
+            $view->assign("text", $postData['text']);
+            $view->assign("subtitle", $postData['subtitle']);
+            $view->assign("headline", $headline);
+        }
+        else
+        {
+            Tools::internalRedirect("error", "notfound");
         }
         
-        
-        $view->assign("allnews", $allnews);
     }
 }
 

@@ -20,6 +20,45 @@ use wsc\form\element\Checkbox;
  */
 class admintopics extends controller_abstract
 {
+    
+    protected $form;
+    protected $elements   = array();
+    
+    public function __construct()
+    {
+        $this->form = new Form("admintopics");
+        $this->form->enableDBFunctions(Application::getInstance()->load("database"));
+        $this->form->setDefaultTable("topics");
+    }
+    
+    public function __get($element)
+    {
+        if(isset($this->elements))
+        {
+            return $this->elements[$element];
+        }
+    }
+    
+    public function __set($name, $element)
+    {
+        $this->elements[$name]  = $element;
+    }
+    
+    protected function getForm()
+    {
+        return $this->form;
+    }
+    
+    protected function addElementsToForm()
+    {
+        if(count($this->elements) > 0)
+        {
+            foreach ($this->elements as $element)
+            {
+                $this->form->add($element);
+            }
+        }
+    }
 
     /**
      * (non-PHPdoc)
@@ -30,99 +69,79 @@ class admintopics extends controller_abstract
     public function default_action()
     {}
     
+    private function createForm()
+    {
+        $this->board  = new Select("board");
+        $this->board->addOptionsFromDBQuery((new Boards())->getAllBoards(), "id", "name");
+        $this->board->setLabel("Board");
+        $this->board->setTableField("boardsId");
+        
+        $this->title  = new Text("title");
+        $this->title->setLabel("Titel");
+        $this->title->setRequired();
+        $this->title->setTableField("title");
+        
+        $this->autor  = new Select("autor");
+        $user   = Application::getInstance()->load("auth")->getUser();
+        
+        $this->autor->addOption($user->data['id'], $user->data['username']);
+        $this->autor->setLabel("Ersteller");
+        $this->autor->setTableField("autor");
+        $this->autor->setRequired();
+        
+        $this->text   = new Textarea("text");
+        $this->text->setLabel("Text");
+        $this->text->setAttribute("type", "textarea");
+        $this->text->setRequired();
+        $this->text->setTableField("text", "posts");
+        
+        $this->form->addDependQuery("posts", "topics", "topicId");
+        
+        $this->replys = new Checkbox("replys");
+        $this->replys->setLabel("Deaktiviere Antworten auf dieses Thema");
+        
+        $this->important = new Checkbox("important");
+        $this->important->setLabel("Als wichtig markieren");
+        
+        $this->submit = new Submit("submitform");
+        $this->submit->setAttribute("value", "Thema erstellen");
+        
+        $this->form->addManualDBField("", "createTimestamp", time());
+        $this->form->addManualDBField("", "autor", $this->autor->getData());
+        
+        $this->addElementsToForm();
+    }
+    
     public function add_action()
     {
         $view   = $this->createView();
         $notify = new SystemNotification();
-        
-        $topic  = new Form("add_topic");
-        $topic->enableDBFunctions(Application::getInstance()->load("database"));
-        $topic->setDefaultTable("topics");
-        $topic->setDBMod($topic::DB_INSERT);
-        
-        
-        $board  = new Select("board");
-        $board->addOptionsFromDBQuery((new Boards())->getAllBoards(), "id", "name");
-        $board->setLabel("Board");
-        $board->setTableField("boardsId");
-        
-        $title  = new Text("title");
-        $title->setLabel("Titel");
-        $title->setRequired();
-        $title->setTableField("title");
-        
-        $autor  = new Select("autor");
-        $user   = Application::getInstance()->load("auth")->getUser();
-        $autor->addOption($user->data['id'], $user->data['username']);
-        $autor->setLabel("Ersteller");
-        $autor->setTableField("autor");
-        $autor->setRequired();
-        $autor->setAttribute("disabled", "disabled");
-        
-        $text   = new Textarea("text");
-        $text->setLabel("Text");
-        $text->setAttribute("type", "textarea");
-        $text->setRequired();
-        
-        $replys = new Checkbox("replys");
-        $replys->setLabel("Deaktiviere Antworten auf dieses Thema");
-        
-        $important = new Checkbox("important");
-        $important->setLabel("Als wichtig markieren");
-        
-        $submit = new Submit("addtopic");
-        $submit->setAttribute("value", "Thema erstellen");
-        
-        $topic->add($title)
-        ->add($board)
-        ->add($autor)
-        ->add($submit)
-        ->add($text)
-        ->add($replys)
-        ->add($important);
+        $this->createForm();
+        $this->form->setDBMod(Form::DB_INSERT);
         
 
-        if(isset($_POST['addtopic']))
+        if(isset($_POST['submitform']))
         {
-            if($topic->isValid())
+            if($this->form->isValid())
             {
-                $topic->addManualDBField("", "createTimestamp", time());
-                $topic->addManualDBField("", "autor", $user->data['id']);
+                $saved  = $this->form->executeDatabase();
                 
-                $saved  = $topic->executeDatabase();
-                
-                
-                
-                if($saved["result"] === true)
-                {
-                    $topic->addManualDBField("posts", "topicId", $saved['database']->insert_id);
-                    $topic->addManualDBField("posts", "autor", $user->data['id']);
-                    $topic->addManualDBField("posts", "createTimestamp", time());
-                    $topic->addManualDBField("posts", "subtitle", $title->getData());
-                    $topic->addManualDBField("posts", "text", $text->getData());
-                    
-                    $saved  = $topic->executeDatabase(true);
-                }
-                
-                
-        
-                if($saved["result"] === true)
+                if($saved === true)
                 {
                     $notify->addMessage("Die Daten wurden erfolgreich gespeichert.", "success");
-                    $view->assign("valid", true);
                 }
+                
+                $view->assign("valid", true);
             }
             else
             {
-                $message  = Tools::getFormattedFormErrors($topic);
+                $message  = Tools::getFormattedFormErrors($this->form);
                 $notify->addMessage($message, "error");
             }
         }
         
-        $view->assign("topic",$topic);
+        $view->assign("topic", $this->form);
         $view->assign("notify",$notify->printMessage(true));
-        
-        
     }
 }
 
