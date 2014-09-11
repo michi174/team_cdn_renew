@@ -34,7 +34,7 @@ q:before, q:after {
 }
 
 
-body						{ background-color:#444; background-image:url(../gfx/header/bsg.png); background-repeat:repeat-x;}
+body						{ background-color:#444;}
 font,th,td,p 				{ font-family:'Segoe UI', Tahoma, Helvetica, Sans-Serif;}
 hr 							{ border-bottom:1px #121212; box-shadow:0px 1px #2A2A2A;}
 
@@ -95,6 +95,33 @@ a:hover						{ text-decoration: underline; color : #555; }
 #news-overview-nwrapper		{width:98%}
 #news-detailview-nwrapper	{width:98%}
 #news-detailview-title		{font-size:2.0rem;}
+.button-cms					{margin:5px; text-decoration:none !important; border:1px solid #ccc; display:block; padding:5px; cursor:pointer; opacity:0.5; font-size:10px; width:50px; text-align:center;transition-property:opacity; transition-duration:0.2s;}
+.button-cms:hover			{opacity:1}
+.edit-cms					{right:2%; position:absolute;}
+.delete-cms					{right:10%; position:absolute;}
+.confirm-yes-no				{}
+.closeable					{}
+
+
+.yes-no-window
+{
+	width:400px;
+	max-height:300px;
+	position:fixed;
+	top:50%;
+	margin-top:-75px;
+	left:50%;
+	margin-left:-200px;
+	font-size: 14px;
+	font-family:'Segoe UI', Tahoma, Helvetica, Sans-Serif;
+	padding: 0px 8px 8px 8px;
+	border: 1px solid #dF882e;
+	border-radius: 0px;
+	background-color: #FFF;
+	box-shadow:0px 0px 10px 1px #dc572e;
+	display:none;
+	z-index: 10000;
+}
 
 .singleheadline{
 	line-height:1.7rem;
@@ -107,7 +134,6 @@ a:hover						{ text-decoration: underline; color : #555; }
 input, textarea, select, radio, email, date
 {
 	font-family:'Segoe UI', Tahoma, Helvetica, Sans-Serif;
-	font-size:11px;
 	text-indent :2px;
 	border:1px solid #bbb;
 	height:25px;
@@ -157,14 +183,16 @@ input[type="submit"]
 	line-height:40px;
 	margin-bottom:10px;
 }
+.window-text
+{
+	margin-bottom:15px;
+}
 
 a.output:hover
 {
 	background-color:#F6F6F6;	
 	text-decoration:none;
 }
-
-.closeable	{}
 
 #console
 {
@@ -226,7 +254,7 @@ a.output:hover
 #top-arrow:hover	{background-position:top;cursor:pointer;}
 .register	{width:500px;padding:10px;}
 .additem	{width:80%; padding:10px; margin:auto}
-.addtopic	{width:90%; padding:10px; margin:auto}
+.addtopic	{width:98%; padding:10px; margin:auto}
 
 .register input, .register select
 {
@@ -545,7 +573,7 @@ a.pagescroll_link_active
 .post-bar ul
 {
 	background:#FFF;
-	border:1px solid #CCC;
+	border:0px solid #FFF;
 	padding:5px;
 	padding-left:0px !important;
 	display:block;
@@ -569,7 +597,7 @@ a.pagescroll_link_active
 }
 .post-bar li:hover
 {
-	background-color:#9C3;
+	background-color:#EEE;
 	border-radius:3px;
 }
 li.facebook
@@ -595,10 +623,6 @@ li.kommentare
 {
 	padding-left:5px;
 	float:right;
-}
-li.kommentare:hover
-{
-	background-color:#39F;
 }
 
 .post-bar a:hover
@@ -790,9 +814,9 @@ li.search
 	right:0px;
 	height:100%;
 	color: #000;
-	background-color:hsla(0,0%,20%,0.4);
+	background-color:#222;
 	padding-top:20px;
-	/*box-shadow:-1px 0px 0px #555, inset #CCC 1px 0 1px;*/
+	box-shadow:-1px 0px 0px #222, inset #333 1px 0 1px;
 	display:none;
 	z-index:20;
 	

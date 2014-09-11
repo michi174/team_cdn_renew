@@ -33,7 +33,7 @@ class News extends controller_abstract
     
     public function default_action()
     {
-    	
+    	Tools::internalRedirect("news", "overview");
     }
     
     private function getHeadlineFromText($text)
@@ -79,7 +79,7 @@ class News extends controller_abstract
     {
         $view       = $this->createView();
         $request    = Application::getInstance()->load("request");
-        
+        $error      = true;
         
         
         if($request->get(self::ID_NAME) !== null)
@@ -87,25 +87,36 @@ class News extends controller_abstract
             $topic  = new Topics();
             $topicData  = $topic->getTopicById($request->get(self::ID_NAME));
             
-            $posts      = new Posts();
-            $postData   = $posts->getPostsByTopicID($topicData['id'], 1, 0);
-            $headline_pattern   = '#\[headline\](.*)\[\/headline\]#ismU';
-            
-            $headline   = $this->getHeadlineFromText($postData['text']);
-            $postData['text']   = preg_replace($headline_pattern, "", $postData['text']);
-            
-            $view->assign("autor", Tools::getUsernameByID($topicData['autor']));
-            $view->assign("title", $topicData['title']);
-            $view->assign("date", $topicData['createTimestamp']);
-            $view->assign("text", $postData['text']);
-            $view->assign("subtitle", $postData['subtitle']);
-            $view->assign("headline", $headline);
-        }
-        else
-        {
-            Tools::internalRedirect("error", "notfound");
+            if($topicData !== false)
+            {
+                $posts      = new Posts();
+                $postData   = $posts->getPostsByTopicID($topicData['id'], 1, 0);
+                
+                if($postData !== false)
+                {
+                    $headline_pattern   = '#\[headline\](.*)\[\/headline\]#ismU';
+                    $headline   = $this->getHeadlineFromText($postData['text']);
+                    $postData['text']   = preg_replace($headline_pattern, "", $postData['text']);
+                    
+                    $view->assign("autor", Tools::getUsernameByID($topicData['autor']));
+                    $view->assign("title", $topicData['title']);
+                    $view->assign("date", $topicData['createTimestamp']);
+                    $view->assign("text", $postData['text']);
+                    $view->assign("subtitle", $postData['subtitle']);
+                    $view->assign("headline", $headline);
+                    $view->assign("id", $topicData['id']);
+                    
+                    $error  = false;
+                }
+
+            }
+
         }
         
+        if($error === true)
+        {
+            Tools::internalRedirect("error", "notfound");
+        }        
     }
 }
 

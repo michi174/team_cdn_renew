@@ -4,7 +4,7 @@
     <div id="add-topic-wrapper" class="default-form">
         <div class="section-title s-t-top addtopic">
             <img src="template/default/gfx/header/icons/add_topic.png" style="vertical-align:middle;">
-            Neues Thema erstellen
+            <?=$this->title?>
         </div>
         <div class="section-body addtopic"> 
             <div class="left">

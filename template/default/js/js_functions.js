@@ -239,21 +239,32 @@ $(document).ready(function(){
 	
 	
 	
+
+	//Sciherheitsabfrage "Löschen"
+	$('.confirm-yes-no').click(function(event){
+		event.preventDefault();
+		$('#delete-dataset').show();
+		$('#delete-true').attr('href', $(this).attr('href'));
+		title	= $(this).attr('title');
+		message	= $(this).attr('message');
+		
+		if(title != "")
+		{
+			$('#yes-no-title').text(title);
+		}
+		
+		if(message != "")
+		{
+			$('#yes-no-message').text(message);
+		}
+	});
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	$('#delete-false').click(function(){
+		$('#delete-dataset').hide();
+	});
 	
 	
 	//DevConsole
-	
 	$('#console-toggler').click(function(){
 		$('#console').toggle(100);
 	});
@@ -270,6 +281,11 @@ $(document).ready(function(){
 	$('.window').draggable({
 		handle:'.window-title',
 		containment:'parent',
+		stack: ".window",
+	});
+		$('.yes-no-window').draggable({
+		handle:'.window-title',
+		containment:'window',
 		stack: ".window",
 	});
 	

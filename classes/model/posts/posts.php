@@ -29,8 +29,37 @@ class Posts extends Model_abstract
         }
     
         $query  = "SELECT * FROM " . $this->table . " WHERE TopicId = ". $id . " ORDER BY " . $order ." ". $sort . $limit_qu;
+        
+        if(!empty($id))
+        {
+            return $this->executeQuery($query)[0];
+        }
+        
+        return false;
+    }
     
-        return $this->executeQuery($query)[0];
+    public function createPost($topicId, $autor, $subtitle, $text, $createTimestamp=true, $recRef="")
+    {
+        if($createTimestamp === true)
+        {
+            $timestamp  = time();
+        }
+        
+        $redID  = $this->database->createRecID();
+        
+        $sql    = " INSERT ".$this->table."(topicId, autor, subtitle, text, createTimestamp, recRef, recId)
+                    VALUES('".$topicId."','".$autor."','".$subtitle."','".$text."','".$timestamp."','".$recRef."', '".$redID."')";
+        
+        $res    = $this->database->query($sql);
+        
+        if($this->database->affected_rows > 0)
+        {
+            return $this->database->insert_id;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
 

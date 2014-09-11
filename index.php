@@ -49,6 +49,7 @@ $controller->addSubController("informations");
 $controller->addSubController("content_end",$blacklist);
 $controller->addSubController("footer",$blacklist);
 $controller->addSubController("livetiles");
+$controller->addSubController("tools");
 
 if(isset($_GET['logout']))
 {
