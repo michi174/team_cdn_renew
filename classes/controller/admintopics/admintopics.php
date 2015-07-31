@@ -86,7 +86,6 @@ class admintopics extends controller_abstract
         
         $this->autor->addOption($user->data['id'], $user->data['username']);
         $this->autor->setLabel("Bearbeiter");
-        $this->autor->setTableField("autor");
         $this->autor->setRequired();
         
         $this->text   = new Textarea("text");
@@ -109,7 +108,7 @@ class admintopics extends controller_abstract
         $this->submit->setAttribute("value", "Thema erstellen");
         
         $this->form->addManualDBField("", "createTimestamp", time());
-        $this->form->addManualDBField("", "autor", $this->autor->getData());
+        $this->form->addManualDBField("", "autor", $user->data['id']);
         
         $this->addElementsToForm();
     }

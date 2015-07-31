@@ -55,6 +55,31 @@
 #results, #results-title	{display:none}
 #gamefield, #gamefield-title	{display:none}
 
+#promt-notify
+{
+	width:400px;
+	max-height:300px;
+	position:fixed;
+	top:50%;
+	margin-top:-75px;
+	left:50%;
+	margin-left:-200px;
+	font-size: 14px;
+	font-family:'Segoe UI', Tahoma, Helvetica, Sans-Serif;
+	padding: 0px 8px 8px 8px;
+	border: 1px solid hsla(6, 66%, 53%, 0.5);
+	border-radius: 0px;
+	background-color: #FFF;
+	box-shadow:0px 0px 20px 5px hsla(6, 66%, 53%, 0.75);
+	display:none;
+	z-index: 10000;
+}
+#promt-notify-text
+{
+	text-align:center;
+	font-size:36px;
+}
+
 </style>
 
 
@@ -64,6 +89,15 @@
 </div>
 <br><h4 id="gamefield-title">Das Spielfeld</h4>
 <div class="section-body chicago" id="gamefield">
+    <div id="promt-notify" class="window closeable">
+        <div class="window-title" id="promt-notify-title">Spiel beendet</div>
+        <div class="window-text" id="promt-notify-text">Testtext</div>
+        <div>
+            <div class="left button-cms" id="delete-true" href="">Neues Spiel</div>
+            <div class="left button-cms" id="delete-false">Beenden</div>
+            <div class="clearing"></div>
+        </div> 
+    </div>
     <div class="table">
         <div class="row">
             <div id="cube-1" class="cube">W&uuml;rfel 1</div>
@@ -76,8 +110,12 @@
             <div style="display:table-cell" id="player">Spieler</div>
         </div>  
         <div class="row">
-        	<div style="display:table-cell">Anzahl würfe:</div>
+        	<div style="display:table-cell">Anzahl Würfe:</div>
             <div style="display:table-cell" id="anz_rolls">0</div>
+        </div>
+        <div class="row">
+        	<div style="display:table-cell">Max. Würfe:</div>
+            <div style="display:table-cell" id="max_rolls">3</div>
         </div>
         <div class="row">
         	<div style="display:table-cell">Punkte:</div>

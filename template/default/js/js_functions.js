@@ -1,6 +1,5 @@
 $(document).ready(function(){
     //jQuery Code
-	
 	//Chicago
 	var rolls			= 0;
 	var max_rolls		= 3;
@@ -27,7 +26,7 @@ $(document).ready(function(){
 		$('#gamefield, #gamefield-title').show();
 		$('#results, #results-title').show();
 		$('#player').text(active_player["name"]);
-	});
+	});	
 	
 	//W�rfel fixieren
 	$('.cube').click(function(){
@@ -67,6 +66,7 @@ $(document).ready(function(){
 	$('#roll').click(function(){
 		
 		$unlocked_cubes	= $('.cube').not('.hold');
+		$('#info').text(unescape("\u00A0"));
 		
 		if(last_rolls != 0)
 		{
@@ -132,6 +132,20 @@ $(document).ready(function(){
 			players[bd_player]["bierdeckel"]++;
 			$('#cards-p'+bd_player).text(players[bd_player]["bierdeckel"]);
 			players[bd_player]["earned_bd"] = true;
+			
+			if(players[bd_player]["bierdeckel"] == 3)
+			{
+				if(players[bd_player]["name"] == "Spieler 2")
+					{
+					$('#promt-notify-text').text("Prost! " + players[bd_player]["name"] + " du Arschloch!");
+					}
+				else
+					{
+					$('#promt-notify-text').text("Prost! " + players[bd_player]["name"] + " du schoener Mann!");
+					}
+				
+				$('#promt-notify').show();
+			}
 		}
 	}
 	
@@ -198,7 +212,7 @@ $(document).ready(function(){
 	
 	function setNextPlayer()
 	{
-		$('#info').text("");
+		$('#info').text(unescape("\u00A0"));
 
 		if(active_player["id"] + 1 < players.length)
 		{			
@@ -206,6 +220,7 @@ $(document).ready(function(){
 			$('#player').text(active_player["name"]);
 			$('#act-points').text(active_player["points"]);
 			max_rolls = rolls;
+			$('#max_rolls').text(rolls);
 			resetCubes();
 		}
 		else
@@ -221,19 +236,30 @@ $(document).ready(function(){
 		$('.cube').removeClass("hold");
 		rolls		= 0;
 		$('#anz_rolls').text(rolls);
+		$('#act-points').text(0);
 		$unlocked_cubes	= $('.cube').not('.hold');
 		
 	}
 
 	//Wenn eine neue Runde gestartet wird.
 	$('#new-round').click(function(){
-		assignBierdeckel();
-		active_player	= players[0];
-		$('#player').text(active_player["name"]);
-		resetCubes();
-		resetPoints();
+		if(active_player["id"] + 1 == players.length)
+		{
+			assignBierdeckel();
+			active_player	= players[0];
+			$('#player').text(active_player["name"]);
+			resetCubes();
+			resetPoints();
+			
+			max_rolls		= 3;
+			$('#max_rolls').text(max_rolls);
+			$('#info').text(unescape("\u00A0"));
+		}
+		else
+		{
+			$('#info').text("Bevor nicht alle Spieler gew"+unescape("%FC")+"rfelt haben, kann keine neue Runde gestartet werden.");
+		}
 		
-		max_rolls		= 3;
 	});
 	
 	

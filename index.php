@@ -4,6 +4,7 @@ use wsc\debug\Debugger;
 use wsc\database\Database;
 use wsc\acl\Acl;
 use wsc\auth\Auth;
+use wsc\config\Config;
 
 session_start();
 date_default_timezone_set('Europe/Vienna');
@@ -13,6 +14,7 @@ require_once '../framework/config.php';
 require_once 'autoloader.php';
 
 //Anwendung konfigurieren
+$config = Config::getInstance();
 $config->readIniFile($config->get("doc_root").'/team_cdn_renew/config/config.ini');
 $config->set("abs_project_path", $config->get("doc_root")."/".$config->get("project_dir"));
 $config->set("forward_link", $_SERVER['QUERY_STRING']);
